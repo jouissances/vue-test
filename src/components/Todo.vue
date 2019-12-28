@@ -1,17 +1,21 @@
 <template>
   <div class="app-container">
-    <h2 class="title">To-do List</h2>
+    <h2 class="title">to-do list</h2>
     <div class="todo-list-wrapper">
+      <span class="cleared" v-if="todos.length === 0">All clear! 🎉 You're a champion.</span>
       <ul class="todo-list">
         <li v-for="todo in todos" :key="todo.id" :class="{ 'completed':todo.completed }">
           <input type="checkbox" v-model="todo.completed" />
           <span>{{ todo.text }}</span>
+          <button @click="removeTodo(todo)">
+            <sub>Delete</sub>
+          </button>
         </li>
       </ul>
     </div>
 
     <div class="input-wrapper">
-      <label class="todo" for="text">add todo:</label>
+      <label class="todo" for="text">add to-do:</label>
       <input type="text" id="text" v-model="newTodo" @keyup.enter="addTodo()" />
     </div>
   </div>
@@ -48,6 +52,10 @@ export default {
         completed: false
       });
       this.newTodo = "";
+    },
+
+    removeTodo(todo) {
+      this.todos.splice(this.todos.indexOf(todo), 1);
     }
   }
 };
@@ -56,13 +64,21 @@ export default {
 <style scoped>
 .todo-list-wrapper {
   text-align: left;
-  margin: 8vh 25vw;
+  margin: 8vh 20vw;
   padding: 15px 0;
+}
+
+ul {
+  position: relative;
 }
 
 li {
   list-style: none;
   margin-top: 5px;
+}
+
+label {
+  font-weight: bold;
 }
 
 input {
@@ -75,5 +91,22 @@ input {
 .completed {
   /* color: red; */
   text-decoration: line-through;
+}
+
+ul li button {
+  border: none;
+  font-size: 0.65rem;
+  text-align: right;
+  text-decoration: none;
+  position: absolute;
+  right: 30px;
+  cursor: pointer;
+}
+
+.cleared {
+  display: block;
+  text-align: center;
+  position: relative;
+  top: 5px;
 }
 </style>
